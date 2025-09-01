@@ -2,6 +2,7 @@ package com.antonio.MovieMarket.web.controller;
 
 import com.antonio.MovieMarket.domain.dto.MovieDTO;
 import com.antonio.MovieMarket.domain.service.MovieService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,12 +21,23 @@ public class MovieController {
     }
 
     @GetMapping
-    public List<MovieDTO>  getAll() {
-        return this.movieService.getAll();
+    public ResponseEntity<List<MovieDTO>>  getAll() {
+        List<MovieDTO> movies = this.movieService.getAll();
+
+        if(movies.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(movies);
     }
 
     @GetMapping("/{id}")
-    public MovieDTO getById(@PathVariable long id) {
-        return this.movieService.getById(id);
+    public ResponseEntity<MovieDTO> getById(@PathVariable long id) {
+        MovieDTO movieDTO = this.movieService.getById(id);
+
+        if(movieDTO == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(movieDTO);
     }
 }

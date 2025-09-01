@@ -7,4 +7,6 @@ import java.util.List;
 public interface MovieRepository {
 
     List<MovieDTO> getAll();
+
+    MovieDTO getById(long id);
 }

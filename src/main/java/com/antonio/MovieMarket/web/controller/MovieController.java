@@ -56,4 +56,9 @@ public class MovieController {
     public ResponseEntity<MovieDTO> update(@PathVariable long id, @RequestBody UpdateMovieDTO updateMovieDTO) {
         return ResponseEntity.ok(this.movieService.update(id, updateMovieDTO));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable long id) {
+        return ResponseEntity.ok("Movie with id: "+ this.movieService.delete(id) +" was deleted");
+    }
 }

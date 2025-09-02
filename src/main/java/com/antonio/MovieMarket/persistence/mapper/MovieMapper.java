@@ -1,10 +1,12 @@
 package com.antonio.MovieMarket.persistence.mapper;
 
 import com.antonio.MovieMarket.domain.dto.MovieDTO;
+import com.antonio.MovieMarket.domain.dto.UpdateMovieDTO;
 import com.antonio.MovieMarket.persistence.entity.MovieEntity;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
@@ -24,4 +26,9 @@ public interface MovieMapper {
     @Mapping(source = "genre", target = "genero", qualifiedByName = "genreToString")
     @Mapping(source = "status", target = "estado", qualifiedByName = "booleanToString")
     MovieEntity toEntity(MovieDTO dto);
+
+    @Mapping(target = "titulo", source = "title")
+    @Mapping(target = "fechaEstreno", source = "releaseDate")
+    @Mapping(target = "clasificacion", source = "rating")
+    void updateEntityFromDto(UpdateMovieDTO updateMovieDTO, @MappingTarget MovieEntity movieEntity);
 }

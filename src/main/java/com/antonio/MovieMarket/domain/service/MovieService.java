@@ -1,6 +1,7 @@
 package com.antonio.MovieMarket.domain.service;
 
 import com.antonio.MovieMarket.domain.dto.MovieDTO;
+import com.antonio.MovieMarket.domain.dto.UpdateMovieDTO;
 import com.antonio.MovieMarket.domain.repository.MovieRepository;
 import org.springframework.stereotype.Service;
 
@@ -25,5 +26,9 @@ public class MovieService {
 
     public MovieDTO save(MovieDTO movieDTO) {
         return this.movieRepository.save(movieDTO);
+    }
+
+    public MovieDTO update(long id, UpdateMovieDTO updateMovieDTO) {
+        return this.movieRepository.update(id, updateMovieDTO);
     }
 }

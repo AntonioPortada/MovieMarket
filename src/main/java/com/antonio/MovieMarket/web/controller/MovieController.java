@@ -2,9 +2,12 @@ package com.antonio.MovieMarket.web.controller;
 
 import com.antonio.MovieMarket.domain.dto.MovieDTO;
 import com.antonio.MovieMarket.domain.service.MovieService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,5 +42,10 @@ public class MovieController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(movieDTO);
+    }
+
+    @PostMapping
+    public ResponseEntity<MovieDTO> add(@RequestBody MovieDTO movieDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.movieService.save(movieDTO));
     }
 }

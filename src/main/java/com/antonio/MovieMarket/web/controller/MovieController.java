@@ -1,7 +1,9 @@
 package com.antonio.MovieMarket.web.controller;
 
 import com.antonio.MovieMarket.domain.dto.MovieDTO;
+import com.antonio.MovieMarket.domain.dto.SuggestRequestDTO;
 import com.antonio.MovieMarket.domain.dto.UpdateMovieDTO;
+import com.antonio.MovieMarket.domain.service.MovieMarketAiService;
 import com.antonio.MovieMarket.domain.service.MovieService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +23,11 @@ import java.util.List;
 public class MovieController {
 
     private final MovieService movieService;
+    private final MovieMarketAiService movieMarketAiService;
 
-    public MovieController(MovieService movieService) {
+    public MovieController(MovieService movieService, MovieMarketAiService movieMarketAiService) {
         this.movieService = movieService;
+        this.movieMarketAiService = movieMarketAiService;
     }
 
     @GetMapping
@@ -45,6 +49,11 @@ public class MovieController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(movieDTO);
+    }
+
+    @PostMapping("/suggest")
+    public ResponseEntity<String> generateMovieSuggestion(@RequestBody SuggestRequestDTO suggestRequestDTO) {
+        return ResponseEntity.ok(this.movieMarketAiService.generateMovieSugestions(suggestRequestDTO.userPreference()));
     }
 
     @PostMapping

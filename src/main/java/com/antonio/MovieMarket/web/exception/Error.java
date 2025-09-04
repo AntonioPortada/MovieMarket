@@ -1,6 +1,6 @@
 package com.antonio.MovieMarket.web.exception;
 
-public record MovieAlreadyExistsError(
+public record Error(
         String type,
         String message
 ) {

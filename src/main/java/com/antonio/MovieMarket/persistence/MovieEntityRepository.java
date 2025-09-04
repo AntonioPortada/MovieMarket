@@ -3,6 +3,7 @@ package com.antonio.MovieMarket.persistence;
 import com.antonio.MovieMarket.domain.dto.MovieDTO;
 import com.antonio.MovieMarket.domain.dto.UpdateMovieDTO;
 import com.antonio.MovieMarket.domain.exception.MovieAlreadyExistsException;
+import com.antonio.MovieMarket.domain.exception.MovieDoesNotExistsException;
 import com.antonio.MovieMarket.domain.repository.MovieRepository;
 import com.antonio.MovieMarket.persistence.crud.CrudMovieEntity;
 import com.antonio.MovieMarket.persistence.entity.MovieEntity;
@@ -47,6 +48,10 @@ public class MovieEntityRepository implements MovieRepository {
 
     @Override
     public MovieDTO update(long id, UpdateMovieDTO updateMovieDTO) {
+        if(this.crudMovieEntity.findFirstByTitulo(updateMovieDTO.title()) == null) {
+            throw new MovieDoesNotExistsException(updateMovieDTO.title());
+        }
+
         MovieEntity movieEntity = this.crudMovieEntity.findById(id).orElse(null);
 
         if(movieEntity == null) {
@@ -65,6 +70,11 @@ public class MovieEntityRepository implements MovieRepository {
     }
 
     public long delete(long id) {
+        System.out.println("delete-repo: "+ this.crudMovieEntity.findById(id));
+        if(this.crudMovieEntity.findById(id).isEmpty()) {
+            throw new MovieDoesNotExistsException(id);
+        }
+
         this.crudMovieEntity.deleteById(id);
         return id;
     }

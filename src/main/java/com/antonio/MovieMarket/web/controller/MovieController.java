@@ -5,8 +5,10 @@ import com.antonio.MovieMarket.domain.dto.SuggestRequestDTO;
 import com.antonio.MovieMarket.domain.dto.UpdateMovieDTO;
 import com.antonio.MovieMarket.domain.service.MovieMarketAiService;
 import com.antonio.MovieMarket.domain.service.MovieService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,7 +64,7 @@ public class MovieController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MovieDTO> update(@PathVariable long id, @RequestBody UpdateMovieDTO updateMovieDTO) {
+    public ResponseEntity<MovieDTO> update(@PathVariable long id, @RequestBody @Valid UpdateMovieDTO updateMovieDTO) {
         return ResponseEntity.ok(this.movieService.update(id, updateMovieDTO));
     }
 

@@ -39,6 +39,7 @@ public class RestExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Error> handlerException(Exception ex) {
         Error error = new Error("unknown-error", ex.getMessage());
+        ex.printStackTrace();
         return ResponseEntity.internalServerError().body(error);
     }
 }

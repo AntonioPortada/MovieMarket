@@ -2,6 +2,7 @@ package com.antonio.MovieMarket.persistence;
 
 import com.antonio.MovieMarket.domain.dto.MovieDTO;
 import com.antonio.MovieMarket.domain.dto.UpdateMovieDTO;
+import com.antonio.MovieMarket.domain.exception.MovieAlreadyExistsException;
 import com.antonio.MovieMarket.domain.repository.MovieRepository;
 import com.antonio.MovieMarket.persistence.crud.CrudMovieEntity;
 import com.antonio.MovieMarket.persistence.entity.MovieEntity;
@@ -35,6 +36,10 @@ public class MovieEntityRepository implements MovieRepository {
 
     @Override
     public MovieDTO save(MovieDTO movieDTO) {
+        if(this.crudMovieEntity.findFirstByTitulo(movieDTO.title()) != null) {
+            throw new MovieAlreadyExistsException(movieDTO.title());
+        }
+
         MovieEntity movieEntity = this.movieMapper.toEntity(movieDTO);
         movieEntity.setEstado("D");
         return this.movieMapper.toDto(this.crudMovieEntity.save(movieEntity));

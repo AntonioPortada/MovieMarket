@@ -5,10 +5,14 @@ import com.antonio.MovieMarket.domain.dto.SuggestRequestDTO;
 import com.antonio.MovieMarket.domain.dto.UpdateMovieDTO;
 import com.antonio.MovieMarket.domain.service.MovieMarketAiService;
 import com.antonio.MovieMarket.domain.service.MovieService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +26,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/movies")
+@Tag(name = "Movies", description = "Transacciones de películas en MovieMarket")
 public class MovieController {
 
     private final MovieService movieService;
@@ -44,7 +49,16 @@ public class MovieController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MovieDTO> getById(@PathVariable long id) {
+    @Operation(
+            summary = "Obtener una película por su identificador.",
+            description = "Devuelve la película que coincida con el identificador enviado.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Película encontrada."),
+                    @ApiResponse(responseCode = "404", description = "Película no encontrada.", content = @Content)
+            }
+    )
+    public ResponseEntity<MovieDTO> getById(
+            @Parameter(description = "Identificador de la película", example = "9") @PathVariable long id) {
         MovieDTO movieDTO = this.movieService.getById(id);
 
         if(movieDTO == null) {
